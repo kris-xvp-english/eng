@@ -226,48 +226,55 @@
         });
 
         // Submit button event listener
-        document.querySelector('.submit-btn').addEventListener('click', function() {
-            const selectedStudent = document.querySelector('input[name="student"]:checked');
-            if (!selectedStudent) {
-                alert('Please select a student first.');
-                return;
-            }
+document.querySelector('.submit-btn').addEventListener('click', function() {
+    const selectedStudent = document.querySelector('input[name="student"]:checked');
+    if (!selectedStudent) {
+        alert('Please select a student first.');
+        return;
+    }
 
-            const rubricData = {
-                studentName: selectedStudent.value,
-                class: selectedStudent.dataset.class,
-                assessment: {
-                    vocabulary: document.querySelector('input[name="vocab"]:checked')?.value || '',
-                    vocabularyComments: document.querySelector('input[name="vocab-comments"]').value,
-                    steps: document.querySelector('input[name="steps"]:checked')?.value || '',
-                    stepsComments: document.querySelector('input[name="steps-comments"]').value,
-                    explanations: document.querySelector('input[name="explain"]:checked')?.value || '',
-                    explanationsComments: document.querySelector('input[name="explain-comments"]').value,
-                    understanding: document.querySelector('input[name="understand"]:checked')?.value || '',
-                    understandingComments: document.querySelector('input[name="understand-comments"]').value
-                }
-            };
+    const rubricData = {
+        studentName: selectedStudent.value,
+        class: selectedStudent.dataset.class,
+        assessment: {
+            vocabulary: document.querySelector('input[name="vocab"]:checked')?.value || '',
+            vocabularyComments: document.querySelector('input[name="vocab-comments"]').value,
+            steps: document.querySelector('input[name="steps"]:checked')?.value || '',
+            stepsComments: document.querySelector('input[name="steps-comments"]').value,
+            explanations: document.querySelector('input[name="explain"]:checked')?.value || '',
+            explanationsComments: document.querySelector('input[name="explain-comments"]').value,
+            understanding: document.querySelector('input[name="understand"]:checked')?.value || '',
+            understandingComments: document.querySelector('input[name="understand-comments"]').value
+        }
+    };
 
-            // Send data to Google Apps Script
-            fetch('https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec', {
-                method: 'POST',
-                body: JSON.stringify(rubricData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Assessment submitted successfully!');
-                // Reset form
-                document.getElementById('rubric-section').classList.remove('active');
-                selectedStudent.checked = false;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error submitting assessment. Please try again.');
-            });
-        });
+    // Using Google Apps Script as a web app
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec';
+    
+    // Convert the data to URL encoded format
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(rubricData));
+
+    // Send as form data
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors', // This is key
+        body: formData
+    })
+    .then(() => {
+        alert('Assessment submitted successfully!');
+        // Reset form
+        document.getElementById('rubric-section').classList.remove('active');
+        selectedStudent.checked = false;
+        // Clear rubric
+        document.querySelectorAll('#rubric-section input[type="radio"]').forEach(radio => radio.checked = false);
+        document.querySelectorAll('#rubric-section input[type="text"]').forEach(input => input.value = '');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting assessment. Please try again.');
+    });
+});
     </script>
 </body>
 </html>
