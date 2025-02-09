@@ -233,33 +233,30 @@ document.querySelector('.submit-btn').addEventListener('click', function() {
         return;
     }
 
-    const rubricData = {
-        studentName: selectedStudent.value,
+    // Structure the data to match your Google Apps Script
+    const data = {
         class: selectedStudent.dataset.class,
-        assessment: {
-            vocabulary: document.querySelector('input[name="vocab"]:checked')?.value || '',
-            vocabularyComments: document.querySelector('input[name="vocab-comments"]').value,
-            steps: document.querySelector('input[name="steps"]:checked')?.value || '',
-            stepsComments: document.querySelector('input[name="steps-comments"]').value,
-            explanations: document.querySelector('input[name="explain"]:checked')?.value || '',
-            explanationsComments: document.querySelector('input[name="explain-comments"]').value,
-            understanding: document.querySelector('input[name="understand"]:checked')?.value || '',
-            understandingComments: document.querySelector('input[name="understand-comments"]').value
-        }
+        name: selectedStudent.value,
+        criteria1: document.querySelector('input[name="vocab"]:checked')?.value || '',
+        criteria2: document.querySelector('input[name="steps"]:checked')?.value || '',
+        criteria3: document.querySelector('input[name="explain"]:checked')?.value || '',
+        criteria4: document.querySelector('input[name="understand"]:checked')?.value || '',
+        comments: [
+            document.querySelector('input[name="vocab-comments"]').value,
+            document.querySelector('input[name="steps-comments"]').value,
+            document.querySelector('input[name="explain-comments"]').value,
+            document.querySelector('input[name="understand-comments"]').value
+        ].join(' | ') // Combining all comments with a separator
     };
 
-    // Using Google Apps Script as a web app
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec';
-    
-    // Convert the data to URL encoded format
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(rubricData));
-
-    // Send as form data
-    fetch(scriptURL, {
+    // Send to Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec', {
         method: 'POST',
-        mode: 'no-cors', // This is key
-        body: formData
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
     })
     .then(() => {
         alert('Assessment submitted successfully!');
