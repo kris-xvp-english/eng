@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Member Selector with Rubric Assessment</title>
+    <title>Class Member Selector</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,28 +24,54 @@
         }
         .member-item {
             margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .selected-members {
-            margin-top: 30px;
+        #rubric-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
         }
-        .rubric-table {
+        #rubric-section.active {
+            display: block;
+        }
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-        .rubric-table th, .rubric-table td {
+        th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        .rubric-table th {
+        th {
             background-color: #f2f2f2;
+        }
+        .submit-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .comments-field {
+            width: 100%;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Class Member Selector with Rubric Assessment</h1>
+        <h1>Class Member Selector</h1>
         <div class="class-selector">
             <label for="class-select">Select Class:</label>
             <select id="class-select">
@@ -58,63 +84,189 @@
             </select>
         </div>
 
-        <div id="selected-names"></div>
+        <!-- Class X3 -->
+        <div id="X3" class="member-list">
+            <h2>Class X 3 Members</h2>
+            <div class="member-item">
+                <input type="radio" name="student" id="X3-1" value="ALVIN FERNANDO SITORUS" data-class="X3">
+                <label for="X3-1">ALVIN FERNANDO SITORUS</label>
+            </div>
+            <div class="member-item">
+                <input type="radio" name="student" id="X3-2" value="ANNE AURELLIA SUSANTO" data-class="X3">
+                <label for="X3-2">ANNE AURELLIA SUSANTO</label>
+            </div>
+            <!-- Add more X3 students here -->
+        </div>
+
+        <!-- Class X4 -->
+        <div id="X4" class="member-list">
+            <h2>Class X 4 Members</h2>
+            <div class="member-item">
+                <input type="radio" name="student" id="X4-1" value="AGATA NATALIA SIBARANI" data-class="X4">
+                <label for="X4-1">AGATA NATALIA SIBARANI</label>
+            </div>
+            <div class="member-item">
+                <input type="radio" name="student" id="X4-2" value="ANASTASIA DIAN GESTAMIARUM" data-class="X4">
+                <label for="X4-2">ANASTASIA DIAN GESTAMIARUM</label>
+            </div>
+            <!-- Add more X4 students here -->
+        </div>
+
+        <!-- Class X5 -->
+        <div id="X5" class="member-list">
+            <h2>Class X 5 Members</h2>
+            <div class="member-item">
+                <input type="radio" name="student" id="X5-1" value="ALBERTUS NUGRAHA TEGAR PRADIPTA" data-class="X5">
+                <label for="X5-1">ALBERTUS NUGRAHA TEGAR PRADIPTA</label>
+            </div>
+            <div class="member-item">
+                <input type="radio" name="student" id="X5-2" value="ANDRE ALVARO PASEBAN" data-class="X5">
+                <label for="X5-2">ANDRE ALVARO PASEBAN</label>
+            </div>
+            <!-- Add more X5 students here -->
+        </div>
+
+        <!-- Class X6 -->
+        <div id="X6" class="member-list">
+            <h2>Class X 6 Members</h2>
+            <div class="member-item">
+                <input type="radio" name="student" id="X6-1" value="ANDREA CHRISTY LUKITO" data-class="X6">
+                <label for="X6-1">ANDREA CHRISTY LUKITO</label>
+            </div>
+            <div class="member-item">
+                <input type="radio" name="student" id="X6-2" value="ARYA AGRAMANIK DANUARTA" data-class="X6">
+                <label for="X6-2">ARYA AGRAMANIK DANUARTA</label>
+            </div>
+            <!-- Add more X6 students here -->
+        </div>
+
+        <!-- Class X7 -->
+        <div id="X7" class="member-list">
+            <h2>Class X 7 Members</h2>
+            <div class="member-item">
+                <input type="radio" name="student" id="X7-1" value="ALEXANDRA NATASHA" data-class="X7">
+                <label for="X7-1">ALEXANDRA NATASHA</label>
+            </div>
+            <div class="member-item">
+                <input type="radio" name="student" id="X7-2" value="AURELLIA ZIVVA HERMANTO" data-class="X7">
+                <label for="X7-2">AURELLIA ZIVVA HERMANTO</label>
+            </div>
+            <!-- Add more X7 students here -->
+        </div>
+
+        <!-- Rubric Section -->
+        <div id="rubric-section">
+            <h2>Assessment Rubric for <span id="selected-student">No student selected</span></h2>
+            <table>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Yes</th>
+                    <th>No</th>
+                    <th>Comments</th>
+                </tr>
+                <tr>
+                    <td>Used at least two vocabulary words correctly in each sentence.</td>
+                    <td><input type="radio" name="vocab" value="yes"></td>
+                    <td><input type="radio" name="vocab" value="no"></td>
+                    <td><input type="text" class="comments-field" name="vocab-comments"></td>
+                </tr>
+                <tr>
+                    <td>Created logical steps or tips related to the assigned topic.</td>
+                    <td><input type="radio" name="steps" value="yes"></td>
+                    <td><input type="radio" name="steps" value="no"></td>
+                    <td><input type="text" class="comments-field" name="steps-comments"></td>
+                </tr>
+                <tr>
+                    <td>Provided clear explanations for why each step/tip is important.</td>
+                    <td><input type="radio" name="explain" value="yes"></td>
+                    <td><input type="radio" name="explain" value="no"></td>
+                    <td><input type="text" class="comments-field" name="explain-comments"></td>
+                </tr>
+                <tr>
+                    <td>Demonstrated understanding of the vocabulary meanings.</td>
+                    <td><input type="radio" name="understand" value="yes"></td>
+                    <td><input type="radio" name="understand" value="no"></td>
+                    <td><input type="text" class="comments-field" name="understand-comments"></td>
+                </tr>
+            </table>
+            <button class="submit-btn">Submit Assessment</button>
+        </div>
     </div>
 
     <script>
-        document.getElementById("class-select").addEventListener("change", function() {
-            document.querySelectorAll(".member-list").forEach(list => list.classList.remove("active"));
-            let selectedClass = this.value;
-            if (selectedClass) {
-                document.getElementById(selectedClass).classList.add("active");
-            }
-            document.getElementById("selected-names").innerHTML = "";
-        });
-    </script>
-
-    <button id="submitBtn">Submit</button>
-    <script>
-        document.getElementById("submitBtn").addEventListener("click", function() {
-            const selectedClass = document.getElementById("class-select").value;
-            if (!selectedClass) {
-                alert("Please select a class.");
-                return;
-            }
-
-            const selectedCheckboxes = document.querySelectorAll('.member-item input[type="checkbox"]:checked');
-            if (selectedCheckboxes.length === 0) {
-                alert("No members selected.");
-                return;
-            }
-
-            let formData = [];
-            selectedCheckboxes.forEach(checkbox => {
-                const name = checkbox.getAttribute('data-name');
-                const criteria1 = document.querySelector(`input[name="${name}-criteria1"]:checked`)?.value || "N/A";
-                const criteria2 = document.querySelector(`input[name="${name}-criteria2"]:checked`)?.value || "N/A";
-                const criteria3 = document.querySelector(`input[name="${name}-criteria3"]:checked`)?.value || "N/A";
-                const criteria4 = document.querySelector(`input[name="${name}-criteria4"]:checked`)?.value || "N/A";
-                const comments = document.querySelector(`textarea[data-name="${name}-comments"]`)?.value || "";
-
-                formData.push({
-                    class: selectedClass,
-                    name: name,
-                    criteria1: criteria1,
-                    criteria2: criteria2,
-                    criteria3: criteria3,
-                    criteria4: criteria4,
-                    comments: comments
-                });
+        document.getElementById('class-select').addEventListener('change', function() {
+            // Hide all member lists
+            document.querySelectorAll('.member-list').forEach(function(list) {
+                list.classList.remove('active');
             });
+            // Show the selected member list
+            var selectedClass = this.value;
+            if (selectedClass) {
+                document.getElementById(selectedClass).classList.add('active');
+            }
+            // Hide rubric when changing class
+            document.getElementById('rubric-section').classList.remove('active');
+            // Clear any selected student
+            document.querySelectorAll('input[name="student"]').forEach(radio => radio.checked = false);
+        });
 
-            fetch("https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+        // Add event listeners to all radio buttons
+        document.querySelectorAll('input[name="student"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    // Show rubric section
+                    document.getElementById('rubric-section').classList.add('active');
+                    // Update student name in rubric title
+                    document.getElementById('selected-student').textContent = this.value;
+                    // Clear previous rubric selections
+                    document.querySelectorAll('#rubric-section input[type="radio"]').forEach(radio => radio.checked = false);
+                    document.querySelectorAll('#rubric-section input[type="text"]').forEach(input => input.value = '');
+                }
+            });
+        });
+
+        // Submit button event listener
+        document.querySelector('.submit-btn').addEventListener('click', function() {
+            const selectedStudent = document.querySelector('input[name="student"]:checked');
+            if (!selectedStudent) {
+                alert('Please select a student first.');
+                return;
+            }
+
+            const rubricData = {
+                studentName: selectedStudent.value,
+                class: selectedStudent.dataset.class,
+                assessment: {
+                    vocabulary: document.querySelector('input[name="vocab"]:checked')?.value || '',
+                    vocabularyComments: document.querySelector('input[name="vocab-comments"]').value,
+                    steps: document.querySelector('input[name="steps"]:checked')?.value || '',
+                    stepsComments: document.querySelector('input[name="steps-comments"]').value,
+                    explanations: document.querySelector('input[name="explain"]:checked')?.value || '',
+                    explanationsComments: document.querySelector('input[name="explain-comments"]').value,
+                    understanding: document.querySelector('input[name="understand"]:checked')?.value || '',
+                    understandingComments: document.querySelector('input[name="understand-comments"]').value
+                }
+            };
+
+            // Send data to Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec', {
+                method: 'POST',
+                body: JSON.stringify(rubricData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
-            .then(response => response.text())
-            .then(result => alert("Data submitted successfully!"))
-            .catch(error => alert("Error submitting data: " + error));
+            .then(response => response.json())
+            .then(data => {
+                alert('Assessment submitted successfully!');
+                // Reset form
+                document.getElementById('rubric-section').classList.remove('active');
+                selectedStudent.checked = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting assessment. Please try again.');
+            });
         });
     </script>
 </body>
