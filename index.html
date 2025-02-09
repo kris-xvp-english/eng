@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Member Selector with Rubric Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .class-selector {
+            margin-bottom: 20px;
+        }
+        .member-list {
+            display: none;
+        }
+        .member-list.active {
+            display: block;
+        }
+        .member-item {
+            margin: 5px 0;
+        }
+        .selected-members {
+            margin-top: 30px;
+        }
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .rubric-table th, .rubric-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .rubric-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Class Member Selector with Rubric Assessment</h1>
+        <div class="class-selector">
+            <label for="class-select">Select Class:</label>
+            <select id="class-select">
+                <option value="">-- Select a Class --</option>
+                <option value="X3">X 3</option>
+                <option value="X4">X 4</option>
+                <option value="X5">X 5</option>
+                <option value="X6">X 6</option>
+                <option value="X7">X 7</option>
+            </select>
+        </div>
+
+        <!-- Class Member Lists -->
+        <div id="X3" class="member-list">
+            <h2>Class X 3 Members</h2>
+            <div class="member-item"><input type="checkbox" data-name="ALVIN FERNANDO SITORUS"> ALVIN FERNANDO SITORUS</div>
+            <div class="member-item"><input type="checkbox" data-name="ANNE AURELLIA SUSANTO"> ANNE AURELLIA SUSANTO</div>
+            <div class="member-item"><input type="checkbox" data-name="CANDY WISELY"> CANDY WISELY</div>
+            <div class="member-item"><input type="checkbox" data-name="CHALISYA JANNYA CAHYADI"> CHALISYA JANNYA CAHYADI</div>
+            <div class="member-item"><input type="checkbox" data-name="CHRISTIAN FILBERT AVARREL"> CHRISTIAN FILBERT AVARREL</div>
+            <div class="member-item"><input type="checkbox" data-name="CHRISTOPER APRILIO NOVENANDO EKTA"> CHRISTOPER APRILIO NOVENANDO EKTA</div>
+            <div class="member-item"><input type="checkbox" data-name="CHUNG SAMUEL"> CHUNG SAMUEL</div>
+            <div class="member-item"><input type="checkbox" data-name="CORNELIUS NICHOLAS MIGUEL"> CORNELIUS NICHOLAS MIGUEL</div>
+            <div class="member-item"><input type="checkbox" data-name="DESTIN SURIYA KWAN"> DESTIN SURIYA KWAN</div>
+            <div class="member-item"><input type="checkbox" data-name="ELFREYA CAITLYN GUNAWAN"> ELFREYA CAITLYN GUNAWAN</div>
+            <div class="member-item"><input type="checkbox" data-name="FARREL FERNANDO SETIAWAN"> FARREL FERNANDO SETIAWAN</div>
+            <div class="member-item"><input type="checkbox" data-name="WINDY VALERIE RIKI"> WINDY VALERIE RIKI</div>
+        </div>
+
+        <div id="X4" class="member-list">
+            <h2>Class X 4 Members</h2>
+            <div class="member-item"><input type="checkbox" data-name="AGATA NATALIA SIBARANI"> AGATA NATALIA SIBARANI</div>
+            <div class="member-item"><input type="checkbox" data-name="VERSEN NICO FERNANDO"> VERSEN NICO FERNANDO</div>
+            <div class="member-item"><input type="checkbox" data-name="WILLIAM SANJAYA LIONG"> WILLIAM SANJAYA LIONG</div>
+        </div>
+
+        <div id="X5" class="member-list">
+            <h2>Class X 5 Members</h2>
+            <div class="member-item"><input type="checkbox" data-name="ALBERTUS NUGRAHA TEGAR PRADIPTA"> ALBERTUS NUGRAHA TEGAR PRADIPTA</div>
+            <div class="member-item"><input type="checkbox" data-name="ANDRE ALVARO PASEBAN"> ANDRE ALVARO PASEBAN</div>
+            <div class="member-item"><input type="checkbox" data-name="ARRON EMERLADO KESUMA"> ARRON EMERLADO KESUMA</div>
+            <div class="member-item"><input type="checkbox" data-name="YOANNE MARCELLINE WIJAYA"> YOANNE MARCELLINE WIJAYA</div>
+        </div>
+
+        <div id="X6" class="member-list">
+            <h2>Class X 6 Members</h2>
+            <div class="member-item"><input type="checkbox" data-name="ANDREA CHRISTY LUKITO"> ANDREA CHRISTY LUKITO</div>
+            <div class="member-item"><input type="checkbox" data-name="YOCELYN CLARA DEVIKA"> YOCELYN CLARA DEVIKA</div>
+        </div>
+
+        <div id="X7" class="member-list">
+            <h2>Class X 7 Members</h2>
+            <div class="member-item"><input type="checkbox" data-name="ALEXANDRA NATASHA"> ALEXANDRA NATASHA</div>
+            <div class="member-item"><input type="checkbox" data-name="AURELLIA ZIVVA HERMANTO"> AURELLIA ZIVVA HERMANTO</div>
+            <div class="member-item"><input type="checkbox" data-name="YOHANES ANDRE KRISTIAN"> YOHANES ANDRE KRISTIAN</div>
+        </div>
+
+        <!-- Selected Members Section -->
+        <div class="selected-members">
+            <h2>Selected Members</h2>
+            <div id="selected-names"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle checkbox changes
+        function handleCheckboxChange() {
+            const selectedNamesContainer = document.getElementById('selected-names');
+            selectedNamesContainer.innerHTML = ''; // Clear previous content
+
+            // Get all checked checkboxes
+            const checkedCheckboxes = document.querySelectorAll('.member-item input[type="checkbox"]:checked');
+
+            if (checkedCheckboxes.length === 0) {
+                selectedNamesContainer.innerHTML = '<p>No members selected.</p>';
+                return;
+            }
+
+            // Loop through checked checkboxes and display names with rubric tables
+            checkedCheckboxes.forEach(checkbox => {
+                const name = checkbox.getAttribute('data-name');
+                const rubricTable = `
+                    <h3>${name}</h3>
+                    <table class="rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Criteria</th>
+                                <th>Yes</th>
+                                <th>No</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. Used at least two vocabulary words correctly in each sentence.</td>
+                                <td><input type="radio" name="${name}-criteria1" value="yes"></td>
+                                <td><input type="radio" name="${name}-criteria1" value="no"></td>
+                                <td><textarea rows="2" cols="30"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>2. Created logical steps or tips related to the assigned topic.</td>
+                                <td><input type="radio" name="${name}-criteria2" value="yes"></td>
+                                <td><input type="radio" name="${name}-criteria2" value="no"></td>
+                                <td><textarea rows="2" cols="30"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>3. Provided clear explanations for why each step/tip is important.</td>
+                                <td><input type="radio" name="${name}-criteria3" value="yes"></td>
+                                <td><input type="radio" name="${name}-criteria3" value="no"></td>
+                                <td><textarea rows="2" cols="30"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>4. Demonstrated understanding of the vocabulary meanings.</td>
+                                <td><input type="radio" name="${name}-criteria4" value="yes"></td>
+                                <td><input type="radio" name="${name}-criteria4" value="no"></td>
+                                <td><textarea rows="2" cols="30"></textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                selectedNamesContainer.insertAdjacentHTML('beforeend', rubricTable);
+            });
+        }
+
+        // Add event listeners to checkboxes
+        document.querySelectorAll('.member-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', handleCheckboxChange);
+        });
+
+        // Handle class selection
+        document.getElementById('class-select').addEventListener('change', function() {
+            // Hide all member lists
+            document.querySelectorAll('.member-list').forEach(list => {
+                list.classList.remove('active');
+            });
+
+            // Show the selected member list
+            const selectedClass = this.value;
+            if (selectedClass) {
+                document.getElementById(selectedClass).classList.add('active');
+            }
+
+            // Clear selected names section
+            document.getElementById('selected-names').innerHTML = '';
+        });
+    </script>
+	<button id="submitBtn">Submit</button>
+
+<script>
+    document.getElementById("submitBtn").addEventListener("click", function() {
+        const selectedClass = document.getElementById("class-select").value;
+        if (!selectedClass) {
+            alert("Please select a class.");
+            return;
+        }
+
+        const selectedCheckboxes = document.querySelectorAll('.member-item input[type="checkbox"]:checked');
+        if (selectedCheckboxes.length === 0) {
+            alert("No members selected.");
+            return;
+        }
+
+        selectedCheckboxes.forEach(checkbox => {
+            const name = checkbox.getAttribute('data-name');
+            const criteria1 = document.querySelector(`input[name="${name}-criteria1"]:checked`)?.value || "N/A";
+            const criteria2 = document.querySelector(`input[name="${name}-criteria2"]:checked`)?.value || "N/A";
+            const criteria3 = document.querySelector(`input[name="${name}-criteria3"]:checked`)?.value || "N/A";
+            const criteria4 = document.querySelector(`input[name="${name}-criteria4"]:checked`)?.value || "N/A";
+            const comments = document.querySelector(`textarea[name="${name}-comments"]`)?.value || "";
+
+            const data = {
+                class: selectedClass,
+                name: name,
+                criteria1: criteria1,
+                criteria2: criteria2,
+                criteria3: criteria3,
+                criteria4: criteria4,
+                comments: comments
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbzZ6PIy9ahIBYGQY5DTKo2Fl4ncdUPkxsM3F7UxSN5-tYzsOVdoKfOVLE3-JmKRZvbo4w/exec
+", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(result => alert("Data submitted successfully!"))
+            .catch(error => alert("Error submitting data: " + error));
+        });
+    });
+</script>
+
+</body>
+</html>
